@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>GET /messages</title>
+	<style>
+		body { font-family: system-ui, sans-serif; margin: 3rem auto; max-width: 46rem; line-height: 1.5; }
+		pre { background: #f4f4f4; padding: 1rem; border-radius: 6px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+	</style>
+</head>
+<body>
+	<h1>Resource server response</h1>
+	<p>
+		Signed in as <strong th:text="${user.preferredUsername} ?: ${user.subject}">user</strong>.
+		Token scopes: <code th:text="${scopes}">[openid, profile, message.read]</code>
+	</p>
+
+	<h2>GET http://localhost:8090/messages</h2>
+	<pre th:text="${response}">{ ... }</pre>
+
+	<h2>Access token (JWT) sent as <code>Authorization: Bearer</code></h2>
+	<pre th:text="${tokenValue}">eyJ...</pre>
+
+	<p><a th:href="@{/}">&larr; back</a></p>
+</body>
+</html>

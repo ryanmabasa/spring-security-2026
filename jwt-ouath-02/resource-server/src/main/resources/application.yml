@@ -1,0 +1,19 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: resource-server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Discovered from the auth server at http://localhost:9000/.well-known/openid-configuration.
+          # The resource server uses the published JWK Set to verify JWT signatures,
+          # and validates the "iss" claim matches this value.
+          issuer-uri: http://localhost:9000
+#          unless you specifically need to override where Spring obtains the signing keys
+#          jwk-set-uri: http://localhost:9000/oauth2/jwks
+logging:
+  level:
+    org.springframework.security: info

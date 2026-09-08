@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>OAuth2 Client</title>
+	<style>
+		body { font-family: system-ui, sans-serif; margin: 3rem auto; max-width: 40rem; line-height: 1.5; }
+		code { background: #f4f4f4; padding: .1rem .3rem; border-radius: 3px; }
+		a.button { display: inline-block; padding: .5rem 1rem; background: #2b6cb0; color: #fff;
+			border-radius: 4px; text-decoration: none; }
+	</style>
+</head>
+<body>
+	<h1>OAuth2 Client (our Spring Boot App)</h1>
+
+	<div th:if="${user == null}">
+		<p>You are <strong>not signed in</strong>.</p>
+		<p>
+			Visiting a protected page starts the <code>authorization_code</code> flow against the
+			authorization server at <code>http://localhost:9000</code>.
+		</p>
+		<p><a class="button" th:href="@{/messages}">Sign in &amp; call GET /messages</a></p>
+	</div>
+
+	<div th:if="${user != null}">
+		<p>Signed in as <strong th:text="${user.preferredUsername} ?: ${user.subject}">user</strong>.</p>
+		<ul>
+			<li><a th:href="@{/messages}">Call the resource server: GET /messages</a></li>
+			<li>
+				<form th:action="@{/logout}" method="post" style="display:inline">
+					<button type="submit">Logout</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

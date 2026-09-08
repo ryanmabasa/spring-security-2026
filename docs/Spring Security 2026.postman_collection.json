@@ -1,0 +1,556 @@
+{
+  "info": {
+    "_postman_id": "342f9f71-c762-4f92-8cd1-e3d8d7ccaa58",
+    "name": "Spring Security 2026",
+    "description": "Samples for spring-security-2026.\n\n- Hello World 01: HTTP Basic against a single Spring Boot app.\n- Jwt Oauth 02: the OAuth2 / OIDC triangle -> auth-server (:9000) issues tokens, resource-server (:8090) protects GET/POST /messages, client (:8080) runs the browser authorization_code flow and calls the resource server.\n\nStart order for Jwt Oauth 02: auth-server, then resource-server, then client.\nRun `./mvnw -pl <module> spring-boot:run` from jwt-ouath-02/.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3285508"
+  },
+  "item": [
+    {
+      "name": "Hello World 01",
+      "item": [
+        {
+          "name": "Test (No Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/test",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Basic Auth",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "user",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "709de300-89b0-4f3a-82ab-bb5191e5a178",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/test",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "test"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Jwt Oauth 02",
+      "item": [
+        {
+          "name": "Authorization Server",
+          "item": [
+            {
+              "name": "Get Token - Client Credentials (full scope)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const json = pm.response.json();",
+                      "pm.environment.set(\"JWT_ACCESS_TOKEN\", json.access_token);",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Response has access_token\", function () {",
+                      "    pm.expect(json.access_token).to.be.a(\"string\");",
+                      "});",
+                      "pm.test(\"Scope contains message.read and message.write\", function () {",
+                      "    pm.expect(json.scope).to.include(\"message.read\");",
+                      "    pm.expect(json.scope).to.include(\"message.write\");",
+                      "});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "basic",
+                  "basic": [
+                    {
+                      "key": "username",
+                      "value": "{{JWT_CLIENT_ID}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "password",
+                      "value": "{{JWT_CLIENT_SECRET}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "grant_type",
+                      "value": "client_credentials",
+                      "type": "text"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "message.read message.write",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{JWT_AS_URL}}/oauth2/token",
+                  "host": [
+                    "{{JWT_AS_URL}}"
+                  ],
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ]
+                },
+                "description": "Client Credentials grant for `my-client-id`. Postman cannot run the browser authorization_code flow, so this is how tools obtain a token. Saves the JWT into JWT_ACCESS_TOKEN for the Resource Server requests below."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Token - Client Credentials (read-only scope)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const json = pm.response.json();",
+                      "pm.environment.set(\"JWT_ACCESS_TOKEN_READONLY\", json.access_token);",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Scope is message.read only\", function () {",
+                      "    pm.expect(json.scope).to.eql(\"message.read\");",
+                      "});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "basic",
+                  "basic": [
+                    {
+                      "key": "username",
+                      "value": "{{JWT_CLIENT_ID}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "password",
+                      "value": "{{JWT_CLIENT_SECRET}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "grant_type",
+                      "value": "client_credentials",
+                      "type": "text"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "message.read",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{JWT_AS_URL}}/oauth2/token",
+                  "host": [
+                    "{{JWT_AS_URL}}"
+                  ],
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ]
+                },
+                "description": "Same grant, scoped to message.read only - saved into JWT_ACCESS_TOKEN_READONLY to show the resource server rejecting POST /messages with 403."
+              },
+              "response": []
+            },
+            {
+              "name": "OIDC Discovery Document",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{JWT_AS_URL}}/.well-known/openid-configuration",
+                  "host": [
+                    "{{JWT_AS_URL}}"
+                  ],
+                  "path": [
+                    ".well-known",
+                    "openid-configuration"
+                  ]
+                },
+                "description": "Metadata document the client and resource server auto-discover from `issuer-uri` at startup."
+              },
+              "response": []
+            },
+            {
+              "name": "JWKS",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{JWT_AS_URL}}/oauth2/jwks",
+                  "host": [
+                    "{{JWT_AS_URL}}"
+                  ],
+                  "path": [
+                    "oauth2",
+                    "jwks"
+                  ]
+                },
+                "description": "Public signing key(s) the resource server uses to verify JWT signatures."
+              },
+              "response": []
+            },
+            {
+              "name": "Authorize (open in browser - Authorization Code flow)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{JWT_AS_URL}}/oauth2/authorize?response_type=code&client_id={{JWT_CLIENT_ID}}&redirect_uri={{JWT_REDIRECT_URI}}&scope=openid profile message.read message.write&state=xyz",
+                  "host": [
+                    "{{JWT_AS_URL}}"
+                  ],
+                  "path": [
+                    "oauth2",
+                    "authorize"
+                  ],
+                  "query": [
+                    {
+                      "key": "response_type",
+                      "value": "code"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "{{JWT_CLIENT_ID}}"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "{{JWT_REDIRECT_URI}}"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "openid profile message.read message.write"
+                    },
+                    {
+                      "key": "state",
+                      "value": "xyz"
+                    }
+                  ]
+                },
+                "description": "A raw peek at the authorization endpoint. The real flow is driven by the Client App (it adds PKCE and exchanges the code using the client secret) - see 'Client App > Login & call /messages'. Sign in with {{JWT_USERNAME}} / {{JWT_PASSWORD}} and approve the consent screen."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Resource Server",
+          "item": [
+            {
+              "name": "GET /messages",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Body carries the JWT subject and messages\", function () {",
+                      "    const json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"subject\");",
+                      "    pm.expect(json.messages).to.be.an(\"array\");",
+                      "});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{JWT_ACCESS_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{JWT_RS_URL}}/messages",
+                  "host": [
+                    "{{JWT_RS_URL}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ]
+                },
+                "description": "Requires SCOPE_message.read. Returns the JWT subject, issuer, granted scopes and the message list."
+              },
+              "response": []
+            },
+            {
+              "name": "GET /messages (No Auth - expect 401)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {",
+                      "    pm.response.to.have.status(401);",
+                      "});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{JWT_RS_URL}}/messages",
+                  "host": [
+                    "{{JWT_RS_URL}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ]
+                },
+                "description": "No Authorization header - the resource server rejects this with 401."
+              },
+              "response": []
+            },
+            {
+              "name": "GET /messages (Read-Only Token - expect 200)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{JWT_ACCESS_TOKEN_READONLY}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{JWT_RS_URL}}/messages",
+                  "host": [
+                    "{{JWT_RS_URL}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ]
+                },
+                "description": "message.read is enough for GET - this succeeds with the read-only token."
+              },
+              "response": []
+            },
+            {
+              "name": "POST /messages",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{JWT_ACCESS_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"Buy milk\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{JWT_RS_URL}}/messages",
+                  "host": [
+                    "{{JWT_RS_URL}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ]
+                },
+                "description": "Requires SCOPE_message.write."
+              },
+              "response": []
+            },
+            {
+              "name": "POST /messages (Read-Only Token - expect 403)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 403\", function () {",
+                      "    pm.response.to.have.status(403);",
+                      "});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{JWT_ACCESS_TOKEN_READONLY}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"This should be rejected\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{JWT_RS_URL}}/messages",
+                  "host": [
+                    "{{JWT_RS_URL}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ]
+                },
+                "description": "Uses JWT_ACCESS_TOKEN_READONLY (scope message.read only) - the resource server rejects the write with 403."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Client App",
+          "item": [
+            {
+              "name": "Home",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{JWT_CLIENT_URL}}/",
+                  "host": [
+                    "{{JWT_CLIENT_URL}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                },
+                "description": "Public landing page of the client app."
+              },
+              "response": []
+            },
+            {
+              "name": "Login & call /messages (open in browser)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{JWT_CLIENT_URL}}/messages",
+                  "host": [
+                    "{{JWT_CLIENT_URL}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ]
+                },
+                "description": "Open this in a real browser. It is protected, so the client redirects into the authorization_code flow at {{JWT_AS_URL}}, you sign in with {{JWT_USERNAME}} / {{JWT_PASSWORD}} and consent, and the client then calls {{JWT_RS_URL}}/messages with the access token and renders the response. Stateful session + redirects make this unsuitable for Postman itself."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
