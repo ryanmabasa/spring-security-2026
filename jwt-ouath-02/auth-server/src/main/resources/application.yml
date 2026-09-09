@@ -23,10 +23,12 @@ spring:
                 - "authorization_code"
                 - "refresh_token"
               redirect-uris:
-                - "http://127.0.0.1:8080/login/oauth2/code/oidc-client"
+                - "http://127.0.0.1:8080/authorize/oauth2/code/my-oidc-client"
               post-logout-redirect-uris:
                 - "http://127.0.0.1:8080/"
               scopes:
                 - "openid"
                 - "profile"
+                - "message.read"
+                - "message.write"
             require-authorization-consent: true

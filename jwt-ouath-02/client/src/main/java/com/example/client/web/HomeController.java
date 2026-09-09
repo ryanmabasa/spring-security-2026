@@ -35,7 +35,6 @@ public class HomeController {
 
 	@GetMapping("/messages")
 	public String messages(
-			@AuthenticationPrincipal OidcUser user,
 			@RegisteredOAuth2AuthorizedClient("my-oidc-client") OAuth2AuthorizedClient authorizedClient,
 			Model model) {
 
@@ -48,7 +47,6 @@ public class HomeController {
 			.retrieve()
 			.body(MessagesResponse.class);
 
-		model.addAttribute("user", user);
 		model.addAttribute("scopes", authorizedClient.getAccessToken().getScopes());
 		model.addAttribute("tokenValue", accessToken);
 		model.addAttribute("response", response);

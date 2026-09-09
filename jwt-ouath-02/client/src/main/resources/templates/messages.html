@@ -11,7 +11,6 @@
 <body>
 	<h1>Resource server response</h1>
 	<p>
-		Signed in as <strong th:text="${user.preferredUsername} ?: ${user.subject}">user</strong>.
 		Token scopes: <code th:text="${scopes}">[openid, profile, message.read]</code>
 	</p>
 
