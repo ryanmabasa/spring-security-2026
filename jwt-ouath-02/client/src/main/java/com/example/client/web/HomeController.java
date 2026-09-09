@@ -2,6 +2,7 @@ package com.example.client.web;
 
 import java.util.Map;
 
+import com.example.client.dto.MessagesResponse;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -35,17 +36,17 @@ public class HomeController {
 	@GetMapping("/messages")
 	public String messages(
 			@AuthenticationPrincipal OidcUser user,
-			@RegisteredOAuth2AuthorizedClient("my-client-id") OAuth2AuthorizedClient authorizedClient,
+			@RegisteredOAuth2AuthorizedClient("my-oidc-client") OAuth2AuthorizedClient authorizedClient,
 			Model model) {
 
 		String accessToken = authorizedClient.getAccessToken().getTokenValue();
 
 		// Call the resource server exactly as the diagram shows: Bearer <access token> -> GET /messages
-		Map<?, ?> response = this.resourceServerRestClient.get()
+		MessagesResponse response = this.resourceServerRestClient.get()
 			.uri("/messages")
 			.header("Authorization", "Bearer " + accessToken)
 			.retrieve()
-			.body(Map.class);
+			.body(MessagesResponse.class);
 
 		model.addAttribute("user", user);
 		model.addAttribute("scopes", authorizedClient.getAccessToken().getScopes());
