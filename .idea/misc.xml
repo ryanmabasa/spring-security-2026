@@ -5,7 +5,20 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/hello-world-01/pom.xml" />
+        <option value="$PROJECT_DIR$/jwt-ouath-02/client/pom.xml" />
+        <option value="$PROJECT_DIR$/jwt-ouath-02/authorization-server/pom.xml" />
+        <option value="$PROJECT_DIR$/jwt-ouath-02/resource-server/pom.xml" />
+        <option value="$PROJECT_DIR$/jwt-ouath-02/auth-server/pom.xml" />
+        <option value="$PROJECT_DIR$/jwt-ouath-10/auth-server/pom.xml" />
+        <option value="$PROJECT_DIR$/jwt-ouath-10/pom.xml" />
+        <option value="$PROJECT_DIR$/filterdemo/pom.xml" />
+        <option value="$PROJECT_DIR$/filterdemo-02/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/jwt-ouath-02/authorization-server/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="corretto-25" project-jdk-type="JavaSDK">

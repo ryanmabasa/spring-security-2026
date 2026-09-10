@@ -23,7 +23,7 @@ class TestControllerTest {
     @Test
     @DisplayName("The /test endpoint cannot be called unauthenticated")
     public void testFailedAuthentication() throws Exception {
-        mvc.perform(get("/hello"))
+        mvc.perform(get("/test"))
                 .andExpect(unauthenticated());
     }
 

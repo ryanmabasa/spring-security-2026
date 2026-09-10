@@ -1,13 +1,13 @@
-package com.example.hello_world_01;
+package com.example.filter_demo_02;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HelloWorld01Application {
+public class FilterdemoApplication {
 
 	static void main(String[] args) {
-		SpringApplication.run(HelloWorld01Application.class, args);
+		SpringApplication.run(FilterdemoApplication.class, args);
 	}
 
 }

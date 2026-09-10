@@ -4,15 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.example</groupId>
-	<artifactId>jwt-oauth-02</artifactId>
+	<artifactId>jwt-oauth-10</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>jwt-oauth-02</name>
-	<description>
-		OAuth2 / OIDC sample: authorization server + resource server + client.
-		Build all: ./mvnw package
-		Run one:   ./mvnw -pl auth-server spring-boot:run   (then resource-server, then client)
-	</description>
+	<name>jwt-oauth-10</name>
 
 	<modules>
 		<module>auth-server</module>
