@@ -15,4 +15,9 @@ public class AuthorizationService {
         log.info("authenticateCustomer: {}, customerFromDb: {}", authenticateCustomer, customerFromDb);
         return true;
     }
+
+    public boolean checkName(Customer customer, String[] names){
+        log.info("customer: {}, names: {}", customer, names);
+        return true;
+    }
 }
