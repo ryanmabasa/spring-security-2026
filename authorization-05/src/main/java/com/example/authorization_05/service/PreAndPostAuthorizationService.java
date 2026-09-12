@@ -1,21 +1,18 @@
 package com.example.authorization_05.service;
 
 import com.example.authorization_05.model.Customer;
-import com.example.authorization_05.security.NameCheck;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.List;
 
 @Service
-public class ExampleAuthorizationService {
+public class PreAndPostAuthorizationService {
 
-
-    private static final Logger log = LoggerFactory.getLogger(ExampleAuthorizationService.class);
+    private static final Logger log = LoggerFactory.getLogger(PreAndPostAuthorizationService.class);
 
     //@PreAuthorize("principal.name() == #username")
     @PreAuthorize("principal.name() == 'user'")
