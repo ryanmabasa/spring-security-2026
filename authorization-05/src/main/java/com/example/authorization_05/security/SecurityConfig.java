@@ -18,7 +18,7 @@ public class SecurityConfig {
 
 
     @Bean
-    @Profile("local")
+    @Profile("default")
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) {
         return http
                 .authorizeHttpRequests(request ->
@@ -30,12 +30,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Profile("example1")
+    @Profile("request-level")
     public SecurityFilterChain apiSecurityFilterChain2(HttpSecurity http) {
         return http
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/api/admin").access(AuthorizationManagers.allOf(new ReadAuthorizationManager(), AuthorityAuthorizationManager.hasAuthority("write")))
                                 .requestMatchers("/api/customers").access(new ReadAuthorizationManager())
+                )
+                .addFilterBefore(new ApiKeyFilter(), AuthorizationFilter.class)
+                .build();
+    }
+
+    @Bean
+    @Profile("method-level")
+    public SecurityFilterChain apiSecurityFilterChain3(HttpSecurity http) {
+        return http
+                .authorizeHttpRequests(request ->
+                        request.anyRequest().authenticated()
                 )
                 .addFilterBefore(new ApiKeyFilter(), AuthorizationFilter.class)
                 .build();
