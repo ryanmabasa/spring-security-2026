@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "06251fa1-4524-4710-8746-0310ae489f80",
+    "_postman_id": "05f80800-884b-4674-937a-e57410ebd42d",
     "name": "Spring Security 2026",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "3285508"
@@ -413,73 +413,6 @@
           "response": []
         },
         {
-          "name": "Customers - No Key",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 403\", function () {",
-                  "    pm.response.to.have.status(403);",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{BASE_URL}}/api/customers",
-              "host": [
-                "{{BASE_URL}}"
-              ],
-              "path": [
-                "api",
-                "customers"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Customers - Invalid Key",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 403\", function () {",
-                  "    pm.response.to.have.status(403);",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "x-apikey",
-                "value": "garbage-key"
-              }
-            ],
-            "url": {
-              "raw": "{{BASE_URL}}/api/customers",
-              "host": [
-                "{{BASE_URL}}"
-              ],
-              "path": [
-                "api",
-                "customers"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Admin - Read+Write (admin key)",
           "event": [
             {
@@ -552,47 +485,14 @@
           "response": []
         },
         {
-          "name": "Admin - No Key",
+          "name": "Pre Authorize",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status code is 403\", function () {",
-                  "    pm.response.to.have.status(403);",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{BASE_URL}}/api/admin",
-              "host": [
-                "{{BASE_URL}}"
-              ],
-              "path": [
-                "api",
-                "admin"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Admin - Invalid Key",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 403\", function () {",
-                  "    pm.response.to.have.status(403);",
-                  "});"
+                  "pm.test(\"Status code is 403\", function () {\n    pm.response.to.have.status(403);\n});"
                 ]
               }
             }
@@ -602,17 +502,74 @@
             "header": [
               {
                 "key": "x-apikey",
-                "value": "garbage-key"
+                "value": "user"
               }
             ],
             "url": {
-              "raw": "{{BASE_URL}}/api/admin",
+              "raw": "{{BASE_URL}}/api/pre-authorized",
               "host": [
                 "{{BASE_URL}}"
               ],
               "path": [
                 "api",
-                "admin"
+                "pre-authorized"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Authorize",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403\", function () {\n    pm.response.to.have.status(403);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-apikey",
+                "value": "user"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/post-authorized",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "post-authorized"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get employee (user)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-apikey",
+                "value": "user"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/employee",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "employee"
               ]
             }
           },
