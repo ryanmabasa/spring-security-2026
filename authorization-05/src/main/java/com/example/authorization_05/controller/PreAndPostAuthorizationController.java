@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ExampleAuthorizationController {
+public class PreAndPostAuthorizationController {
 
     private final ExampleAuthorizationService exampleAuthorizationService;
 
-    public ExampleAuthorizationController(ExampleAuthorizationService exampleAuthorizationService) {
+    public PreAndPostAuthorizationController(ExampleAuthorizationService exampleAuthorizationService) {
         this.exampleAuthorizationService = exampleAuthorizationService;
     }
 
