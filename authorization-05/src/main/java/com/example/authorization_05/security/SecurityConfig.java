@@ -8,6 +8,7 @@ import org.springframework.security.authorization.AuthorizationManagers;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.annotation.AnnotationTemplateExpressionDefaults;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
@@ -51,5 +52,12 @@ public class SecurityConfig {
                 .addFilterBefore(new ApiKeyFilter(), AuthorizationFilter.class)
                 .build();
     }
+
+
+    @Bean
+    public AnnotationTemplateExpressionDefaults annotationTemplateExpressionDefaults() {
+        return new AnnotationTemplateExpressionDefaults();
+    }
+
 
 }
